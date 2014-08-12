@@ -15,7 +15,7 @@ function midiVarhash(duplexPort){
   obs._removeListeners = [
     handle(duplexPort, handleData),
     obs.output(updateOutput),
-    handleResend(duplexPort, outputValues)
+    handleResend(duplexPort, outputValues, clearInput)
   ]
 
   return obs
@@ -33,6 +33,12 @@ function midiVarhash(duplexPort){
         outputValues[key] = values[key]
         duplexPort.write(getMessage(key, values[key]))
       }
+    })
+  }
+
+  function clearInput(){
+    Object.keys(obs()).forEach(function(key){
+      obs.put(key, null)
     })
   }
 

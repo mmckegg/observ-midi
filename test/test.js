@@ -190,6 +190,28 @@ test('grid', function(t){
   t.equal(obs.get(1,0), 40)
   t.equal(obs.get(1,1), 30)
 
+  // SWITCH
+
+  changes = []
+  output = []
+  duplexPort.emit('switch')
+
+  t.equal(changes.length, 1)
+  t.same(changes[0]._diff, [ 
+    [ 0, 0, null ], [ 0, 1, null ], [ 1, 0, null ], [ 1, 1, null ] 
+  ])
+  t.equal(obs.get(0,0), null)
+  t.equal(obs.get(0,1), null)
+  t.equal(obs.get(1,0), null)
+  t.equal(obs.get(1,1), null)
+
+  t.same(output, [
+    [144, 0, 127],
+    [144, 1, 100],
+    [144, 2, 90],
+    [144, 3, 20]
+  ])
+
   t.end()
 
 })

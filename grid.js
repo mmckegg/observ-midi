@@ -15,7 +15,7 @@ function midiGrid(duplexPort, mapping){
   var removeListeners = [
     handle(duplexPort, handleData),
     obs.output(updateOutput),
-    handleResend(duplexPort, outputValues)
+    handleResend(duplexPort, outputValues, clearInput)
   ]
 
   return obs
@@ -37,6 +37,16 @@ function midiGrid(duplexPort, mapping){
         outputValues[key] = value
         duplexPort.write(getMessage(key, value))
       }
+    })
+  }
+
+  function clearInput(){
+    obs.transaction(function(t){
+      t.data.forEach(function(value, i){
+        if (value != null){
+          t.data.put(i, null)
+        }
+      })
     })
   }
 

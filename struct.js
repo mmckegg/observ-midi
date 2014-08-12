@@ -14,7 +14,7 @@ function midiStruct(duplexPort, mapping){
 
   var removeListeners = [
     handle(duplexPort, handleData),
-    handleResend(duplexPort, outputValues)
+    handleResend(duplexPort, outputValues, clearInput)
   ]
 
   Object.keys(mapping).forEach(function(key){
@@ -43,5 +43,11 @@ function midiStruct(duplexPort, mapping){
       outputValues[key] = value
       duplexPort.write(getMessage(key, value))
     }
+  }
+
+  function clearInput(){
+    Object.keys(obs()).forEach(function(key){
+      obs[key].set(null)
+    })
   }
 }

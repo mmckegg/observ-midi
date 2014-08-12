@@ -15,7 +15,7 @@ function midiValue(duplexPort, mapping){
   obs._removeListeners = [
     handle(duplexPort, handleData),
     obs.output(updateOutput),
-    handleResend(duplexPort, outputValues)
+    handleResend(duplexPort, outputValues, clearInput)
   ]
 
   return obs
@@ -34,6 +34,10 @@ function midiValue(duplexPort, mapping){
       outputValues[mapping] = value
       duplexPort.write(getMessage(mapping, value))
     }
+  }
+
+  function clearInput(){
+    obs.set(null)
   }
 
 }

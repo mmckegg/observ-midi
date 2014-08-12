@@ -15,7 +15,7 @@ function midiArray(duplexPort, mapping){
   var removeListeners = [
     handle(duplexPort, handleData),
     obs.output(updateOutput),
-    handleResend(duplexPort, outputValues)
+    handleResend(duplexPort, outputValues, clearInput)
   ]
 
   return obs
@@ -38,6 +38,10 @@ function midiArray(duplexPort, mapping){
         duplexPort.write(getMessage(key, value))
       }
     })
+  }
+
+  function clearInput(){
+    obs.splice(0, obs.data.getLength())
   }
 
 }
