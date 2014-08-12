@@ -12,12 +12,23 @@ $ npm install observ-midi
 ## Examples
 
 ```js
+var ObservMidi = require('observ-midi')
+var MidiStream = require('midi-stream')
+
+var duplexPort = MidiStream('Launchpad Mini')
+```
+
+### A single value ([Observ](https://github.com/raynos/observ)):
+
+```js
 var button = ObservMidi(duplexPort, '144/0') // Observ
 button(function(value){
   // visual feedback
   button.output.set(value)
 })
 ```
+
+### A range of values ([ObservArray](https://github.com/raynos/observ-array)):
 
 ```js
 var range = ObservMidi(dupexPort, ['144/0', '144/1', '144/2']) // ObservArray
@@ -28,6 +39,7 @@ range(function(value){
   }
 })
 ```
+### ArrayGrid ([ObservGrid](https://github.com/mmckegg/observ-grid))
 
 ```js
 var grid = ObservMidi(duplexPort, ArrayGrid(['144/0', '144/1'], [2,1])) // ObservGrid
@@ -40,20 +52,35 @@ grid(function(value){
 })
 ```
 
+### Struct ([ObservStruct](https://github.com/raynos/observ-struct))
+
 ```js
 var map = ObservMidi(duplexPort, { play: '176/110', stop: '176/111' }) // ObservStruct
 
 map(function(values){
-    var diff = values._diff
-    Object.keys(diff).forEach(function(key){
-         // visual feedback
-         map[key].output.set(diff[key])
-    })
+  var diff = values._diff
+  Object.keys(diff).forEach(function(key){
+    // visual feedback
+    map[key].output.set(diff[key])
+  })
 })
 
 map.play(function(value){
+  // visual feedback
+  map.store.output.set(value)
+})
+```
+
+### Variable Hash ([ObservVarhash](https://github.com/nrw/observ-varhash))
+
+```js
+var lookup = ObservMidi(duplexPort) // ObservVarhash
+lookup(function(value){
+  var diff = values._diff
+  Object.keys(diff).forEach(function(key){
     // visual feedback
-    map.store.output.set(value)
+    lookup.output.put(key, diff[key])
+  })
 })
 ```
 
