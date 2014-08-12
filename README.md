@@ -84,6 +84,8 @@ lookup(function(value){
 })
 ```
 
+### Resend all output on switch
+
 ```js
 duplexPort.emit('switch') // clear input values, resend all current output values
 ```
