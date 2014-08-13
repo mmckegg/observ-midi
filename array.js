@@ -1,6 +1,7 @@
 var ObservArray = require('observ-array')
 var handle = require('./lib/handle.js')
 var getMessage = require('./lib/get-message.js')
+var getValue = require('./lib/get-value.js')
 var handleResend = require('./lib/handle-resend.js')
 
 module.exports = midiArray
@@ -37,6 +38,7 @@ function midiArray(duplexPort, mapping, output){
   function updateOutput(values){
     values.forEach(function(value, i){
       var key = mapping[i]
+      value = getValue(value)
       if (key != null && outputValues[key] !== value){
         outputValues[key] = value
         duplexPort.write(getMessage(key, value))

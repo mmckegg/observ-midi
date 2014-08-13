@@ -20,7 +20,7 @@ test('value', function(t){
   duplexPort.queue([144, 0, 70])
   duplexPort.queue([144, 0, 0])
 
-  obs.output.set(127)
+  obs.output.set([0, 127]) // value stack: top most outputted
   obs.output.set(50)
   obs.output.set(50)
   obs.output.set(0)

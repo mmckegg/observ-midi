@@ -1,6 +1,7 @@
 var ObservVarhash = require('observ-varhash')
 var handle = require('./lib/handle.js')
 var getMessage = require('./lib/get-message.js')
+var getValue = require('./lib/get-value.js')
 var handleResend = require('./lib/handle-resend.js')
 
 module.exports = midiVarhash
@@ -33,9 +34,10 @@ function midiVarhash(duplexPort, output){
 
   function updateOutput(values){
     Object.keys(values).forEach(function(key){
-      if (outputValues[key] !== values[key]){
-        outputValues[key] = values[key]
-        duplexPort.write(getMessage(key, values[key]))
+      var value = getValue(values[key])
+      if (outputValues[key] !== value){
+        outputValues[key] = value
+        duplexPort.write(getMessage(key, value))
       }
     })
   }

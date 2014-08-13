@@ -1,6 +1,7 @@
 var ObservGrid = require('observ-grid')
 var handle = require('./lib/handle.js')
 var getMessage = require('./lib/get-message.js')
+var getValue = require('./lib/get-value.js')
 var handleResend = require('./lib/handle-resend.js')
 
 module.exports = midiGrid
@@ -37,6 +38,7 @@ function midiGrid(duplexPort, mapping, output){
   function updateOutput(values){
     values.data.forEach(function(value, i){
       var key = mapping.data[i]
+      value = getValue(value)
       if (key != null && outputValues[key] !== value){
         outputValues[key] = value
         duplexPort.write(getMessage(key, value))
