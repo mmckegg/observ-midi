@@ -5,10 +5,10 @@ var handleResend = require('./lib/handle-resend.js')
 
 module.exports = midiArray
 
-function midiArray(duplexPort, mapping){
+function midiArray(duplexPort, mapping, output){
 
   var obs = ObservArray([])
-  obs.output = ObservArray([])
+  obs.output = output || ObservArray([])
 
   var outputValues = {}
 
@@ -17,6 +17,10 @@ function midiArray(duplexPort, mapping){
     obs.output(updateOutput),
     handleResend(duplexPort, outputValues, clearInput)
   ]
+
+  if (output){
+    updateOutput(output())
+  }
 
   return obs
 

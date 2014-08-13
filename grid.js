@@ -5,10 +5,10 @@ var handleResend = require('./lib/handle-resend.js')
 
 module.exports = midiGrid
 
-function midiGrid(duplexPort, mapping){
+function midiGrid(duplexPort, mapping, output){
 
   var obs = ObservGrid([], mapping.shape, mapping.stride)
-  obs.output = ObservGrid([], mapping.shape, mapping.stride)
+  obs.output = output || ObservGrid([], mapping.shape, mapping.stride)
 
   var outputValues = {}
 
@@ -17,6 +17,10 @@ function midiGrid(duplexPort, mapping){
     obs.output(updateOutput),
     handleResend(duplexPort, outputValues, clearInput)
   ]
+
+  if (output){
+    updateOutput(output())
+  }
 
   return obs
 

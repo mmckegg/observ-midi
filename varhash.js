@@ -5,10 +5,10 @@ var handleResend = require('./lib/handle-resend.js')
 
 module.exports = midiVarhash
 
-function midiVarhash(duplexPort){
+function midiVarhash(duplexPort, output){
 
   var obs = ObservVarhash()
-  obs.output = ObservVarhash()
+  obs.output = output || ObservVarhash()
 
   var outputValues = {}
 
@@ -17,6 +17,10 @@ function midiVarhash(duplexPort){
     obs.output(updateOutput),
     handleResend(duplexPort, outputValues, clearInput)
   ]
+
+  if (output){
+    updateOutput(output())
+  }
 
   return obs
 

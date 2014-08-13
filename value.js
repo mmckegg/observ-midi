@@ -5,10 +5,10 @@ var handleResend = require('./lib/handle-resend.js')
 
 module.exports = midiValue
 
-function midiValue(duplexPort, mapping){
+function midiValue(duplexPort, mapping, output){
 
   var obs = Observ()
-  obs.output = Observ()
+  obs.output = output || Observ()
 
   var outputValues = {}
 
@@ -17,6 +17,10 @@ function midiValue(duplexPort, mapping){
     obs.output(updateOutput),
     handleResend(duplexPort, outputValues, clearInput)
   ]
+
+  if (output){
+    updateOutput(output())
+  }
 
   return obs
 
