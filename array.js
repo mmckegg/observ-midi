@@ -36,18 +36,18 @@ function midiArray(duplexPort, mapping, output){
   }
 
   function updateOutput(values){
-    values.forEach(function(value, i){
+    for (var i=0;i<values.length;i++){
       var key = mapping[i]
-      value = getValue(value)
+      var value = getValue(values[i])
       if (key != null && outputValues[key] !== value){
         outputValues[key] = value
         duplexPort.write(getMessage(key, value))
       }
-    })
+    }
   }
 
   function clearInput(){
-    obs.splice(0, obs.data.getLength())
+    obs.splice(0, obs.getLength())
   }
 
 }

@@ -35,15 +35,17 @@ function midiGrid(duplexPort, mapping, output){
     }
   }
 
-  function updateOutput(values){
-    values.data.forEach(function(value, i){
+  function updateOutput(grid){
+    var length = grid.shape[0] * grid.shape[1]
+    for (var i=0;i<length;i++){
       var key = mapping.data[i]
-      value = getValue(value)
-      if (key != null && outputValues[key] !== value){
+      var lastValue = outputValues[key] || 0
+      var value = getValue(grid.data[i])
+      if (key != null && lastValue !== value){
         outputValues[key] = value
         duplexPort.write(getMessage(key, value))
       }
-    })
+    }
   }
 
   function clearInput(){
