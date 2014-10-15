@@ -52,7 +52,7 @@ function midiGrid(duplexPort, mapping, output){
     obs.transaction(function(t){
       t.data.forEach(function(value, i){
         if (value != null){
-          t.data.put(i, null)
+          t.data[i] = null
         }
       })
     })
