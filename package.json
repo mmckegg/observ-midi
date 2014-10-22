@@ -1,6 +1,6 @@
 {
   "name": "observ-midi",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Observe and write to midi stream as a single value, struct, array or grid.",
   "main": "index.js",
   "scripts": {
