@@ -1,4 +1,5 @@
-var ObservGrid = require('observ-grid')
+var Observ = require('observ')
+var ArrayGrid = require('array-grid')
 var handle = require('./lib/handle.js')
 var getMessage = require('./lib/get-message.js')
 var getValue = require('./lib/get-value.js')
@@ -8,8 +9,9 @@ module.exports = midiGrid
 
 function midiGrid(duplexPort, mapping, output){
 
-  var obs = ObservGrid([], mapping.shape, mapping.stride)
-  obs.output = output || ObservGrid([], mapping.shape, mapping.stride)
+
+  var obs = Observ(ArrayGrid([], mapping.shape, mapping.stride))
+  obs.output = output || Observ(ArrayGrid([], mapping.shape, mapping.stride))
 
   var outputValues = {}
 
@@ -31,11 +33,14 @@ function midiGrid(duplexPort, mapping, output){
     var key = data[0] + '/' + data[1]
     var coords = mapping.lookup(key)
     if (coords){
-      obs.set(coords[0], coords[1], data[2])
+      var newArray = ArrayGrid(obs().data.slice(), mapping.shape, mapping.stride)
+      newArray.set(coords[0], coords[1], data[2])
+      obs.set(newArray)
     }
   }
 
   function updateOutput(grid){
+    console.log('>>', grid)
     var length = grid.shape[0] * grid.shape[1]
     for (var i=0;i<length;i++){
       var key = mapping.data[i]
@@ -49,13 +54,7 @@ function midiGrid(duplexPort, mapping, output){
   }
 
   function clearInput(){
-    obs.transaction(function(t){
-      t.data.forEach(function(value, i){
-        if (value != null){
-          t.data[i] = null
-        }
-      })
-    })
+    obs.set(ArrayGrid([], mapping.shape, mapping.stride))
   }
 
 }

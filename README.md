@@ -39,16 +39,14 @@ range(function(value){
   }
 })
 ```
-### ArrayGrid ([ObservGrid](https://github.com/mmckegg/observ-grid))
+
+### ArrayGrid ([Observ(ArrayGrid)](https://github.com/mmckegg/array-grid))
 
 ```js
-var grid = ObservMidi(duplexPort, ArrayGrid(['144/0', '144/1'], [2,1])) // ObservGrid
+var ArrayGrid = require('array-grid')
+var grid = ObservMidi(duplexPort, ArrayGrid(['144/0', '144/1'], [2,1])) // Observ(ArrayGrid)
 grid(function(value){
-  if (value._diff){
-    value._diff.forEach(function(diff){
-      grid.output.set(diff[0], diff[1], diff[2])
-    })
-  }
+  // value is an instance of ArrayGrid
 })
 ```
 
