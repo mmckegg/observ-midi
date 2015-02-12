@@ -40,7 +40,6 @@ function midiGrid(duplexPort, mapping, output){
   }
 
   function updateOutput(grid){
-    console.log('>>', grid)
     var length = grid.shape[0] * grid.shape[1]
     for (var i=0;i<length;i++){
       var key = mapping.data[i]
