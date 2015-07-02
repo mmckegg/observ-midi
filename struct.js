@@ -26,6 +26,9 @@ function midiStruct(duplexPort, mapping){
 
   var obs = ObservStruct(struct)
 
+  obs.destroy = function() {
+    removeListeners.forEach(invoke)
+  }
 
   return obs
 

@@ -13,7 +13,7 @@ function midiValue(duplexPort, mapping, output){
 
   var outputValues = {}
 
-  obs._removeListeners = [
+  var removeListeners = [
     handle(duplexPort, handleData),
     obs.output(updateOutput),
     handleResend(duplexPort, outputValues, clearInput)
@@ -21,6 +21,10 @@ function midiValue(duplexPort, mapping, output){
 
   if (output){
     updateOutput(output())
+  }
+
+  obs.destroy = function() {
+    removeListeners.forEach(invoke)
   }
 
   return obs
@@ -46,4 +50,8 @@ function midiValue(duplexPort, mapping, output){
     obs.set(null)
   }
 
+}
+
+function invoke(f) {
+  f()
 }

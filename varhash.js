@@ -13,11 +13,15 @@ function midiVarhash(duplexPort, output){
 
   var outputValues = {}
 
-  obs._removeListeners = [
+  var removeListeners = [
     handle(duplexPort, handleData),
     obs.output(updateOutput),
     handleResend(duplexPort, outputValues, clearInput)
   ]
+
+  obs.destroy = function() {
+    removeListeners.forEach(invoke)
+  }
 
   if (output){
     updateOutput(output())

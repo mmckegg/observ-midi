@@ -19,6 +19,10 @@ function midiArray(duplexPort, mapping, output){
     handleResend(duplexPort, outputValues, clearInput)
   ]
 
+  obs.destroy = function() {
+    removeListeners.forEach(invoke)
+  }
+
   if (output){
     updateOutput(output())
   }
