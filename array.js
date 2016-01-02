@@ -3,6 +3,7 @@ var handle = require('./lib/handle.js')
 var getMessage = require('./lib/get-message.js')
 var getValue = require('./lib/get-value.js')
 var handleResend = require('./lib/handle-resend.js')
+var write = require('./lib/write.js')
 
 module.exports = midiArray
 
@@ -45,7 +46,7 @@ function midiArray(duplexPort, mapping, output){
       var value = getValue(values[i])
       if (key != null && outputValues[key] !== value){
         outputValues[key] = value
-        duplexPort.write(getMessage(key, value))
+        write(duplexPort, getMessage(key, value))
       }
     }
   }

@@ -3,6 +3,7 @@ var handle = require('./lib/handle.js')
 var getMessage = require('./lib/get-message.js')
 var handleResend = require('./lib/handle-resend.js')
 var getValue = require('./lib/get-value.js')
+var write = require('./lib/write.js')
 
 module.exports = midiValue
 
@@ -42,7 +43,7 @@ function midiValue(duplexPort, mapping, output){
     value = getValue(value)
     if (outputValues[mapping] !== value){
       outputValues[mapping] = value
-      duplexPort.write(getMessage(mapping, value))
+      write(duplexPort, getMessage(mapping, value))
     }
   }
 

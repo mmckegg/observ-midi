@@ -3,6 +3,7 @@ var handle = require('./lib/handle.js')
 var getMessage = require('./lib/get-message.js')
 var getValue = require('./lib/get-value.js')
 var handleResend = require('./lib/handle-resend.js')
+var write = require('./lib/write.js')
 
 module.exports = midiVarhash
 
@@ -41,7 +42,7 @@ function midiVarhash(duplexPort, output){
       var value = getValue(values[key])
       if (outputValues[key] !== value){
         outputValues[key] = value
-        duplexPort.write(getMessage(key, value))
+        write(duplexPort, getMessage(key, value))
       }
     })
   }
