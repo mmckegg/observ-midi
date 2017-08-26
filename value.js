@@ -34,8 +34,14 @@ function midiValue(duplexPort, mapping, output){
 
   function handleData(data){
     var key = data[0] + '/' + data[1]
+    var value = data[2]
+    // on some keyboards, there are not three values, only a two value
+    if (data[2] === undefined) {
+      key = data[0].toString()
+      value = data[1]
+    }
     if (mapping == key){
-      obs.set(data[2])
+      obs.set(value)
     }
   }
 
