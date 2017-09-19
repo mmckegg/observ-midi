@@ -39,6 +39,41 @@ test('value', function(t){
 
 })
 
+test.only('value - 2 value midi', function(t){
+
+  var output = []
+  var duplexPort = Through(function(data){
+    output.push(data)
+  })
+
+  var obs = ObservMidi(duplexPort, '123')
+  var changes = []
+  obs(function(value){
+    changes.push(value)
+  })
+
+  duplexPort.queue([123, 100])
+  duplexPort.queue([123, 70])
+  duplexPort.queue([123, 0])
+
+  obs.output.set([0, 127]) // value stack: top most outputted
+  obs.output.set(50)
+  obs.output.set(50)
+  obs.output.set(0)
+
+  t.same(output, [
+    [123, 127],
+    [123, 50],
+    [123, 0]
+  ])
+
+  t.same(changes, [
+    100, 70, 0
+  ])
+
+  t.end()
+})
+
 test('varhash', function(t){
 
   var output = []
@@ -199,8 +234,8 @@ test('grid', function(t){
   duplexPort.emit('switch')
 
   t.equal(changes.length, 1)
-  //t.same(changes[0]._diff, [ 
-  //  [ 0, 0, null ], [ 0, 1, null ], [ 1, 0, null ], [ 1, 1, null ] 
+  //t.same(changes[0]._diff, [
+  //  [ 0, 0, null ], [ 0, 1, null ], [ 1, 0, null ], [ 1, 1, null ]
   //])
   t.notOk(obs().get(0,0))
   t.notOk(obs().get(0,1))

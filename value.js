@@ -4,6 +4,7 @@ var getMessage = require('./lib/get-message.js')
 var handleResend = require('./lib/handle-resend.js')
 var getValue = require('./lib/get-value.js')
 var write = require('./lib/write.js')
+var getMappedMessage = require('./lib/get-mapped-message')
 
 module.exports = midiValue
 
@@ -32,16 +33,10 @@ function midiValue(duplexPort, mapping, output){
 
   /// scoped
 
-  function handleData(data){
-    var key = data[0] + '/' + data[1]
-    var value = data[2]
-    // on some keyboards, there are not three values, only a two value
-    if (data[2] === undefined) {
-      key = data[0].toString()
-      value = data[1]
-    }
-    if (mapping == key){
-      obs.set(value)
+  function handleData (data) {
+    var msg = getMappedMessage(data)
+    if (mapping === String(msg.key)) {
+      obs.set(msg.value)
     }
   }
 

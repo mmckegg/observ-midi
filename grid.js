@@ -5,6 +5,7 @@ var getMessage = require('./lib/get-message.js')
 var getValue = require('./lib/get-value.js')
 var handleResend = require('./lib/handle-resend.js')
 var write = require('./lib/write.js')
+var getMappedMessage = require('./lib/get-mapped-message')
 
 module.exports = midiGrid
 
@@ -34,12 +35,12 @@ function midiGrid(duplexPort, mapping, output){
 
   /// scoped
 
-  function handleData(data){
-    var key = data[0] + '/' + data[1]
-    var coords = mapping.lookup(key)
-    if (coords){
+  function handleData (data) {
+    var msg = getMappedMessage(data)
+    var coords = mapping.lookup(msg.key)
+    if (coords) {
       var newArray = ArrayGrid(obs().data.slice(), mapping.shape, mapping.stride)
-      newArray.set(coords[0], coords[1], data[2])
+      newArray.set(coords[0], coords[1], msg.value)
       obs.set(newArray)
     }
   }

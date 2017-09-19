@@ -4,6 +4,7 @@ var getMessage = require('./lib/get-message.js')
 var getValue = require('./lib/get-value.js')
 var handleResend = require('./lib/handle-resend.js')
 var write = require('./lib/write.js')
+var getMappedMessage = require('./lib/get-mapped-message')
 
 module.exports = midiArray
 
@@ -32,11 +33,11 @@ function midiArray(duplexPort, mapping, output){
 
   /// scoped
 
-  function handleData(data){
-    var key = data[0] + '/' + data[1]
-    var index = mapping.indexOf(key)
-    if (~index){
-      obs.put(index, data[2])
+  function handleData (data) {
+    var msg = getMappedMessage(data)
+    var index = mapping.indexOf(msg.key)
+    if (~index) {
+      obs.put(index, msg.value)
     }
   }
 

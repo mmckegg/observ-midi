@@ -5,6 +5,7 @@ var getMessage = require('./lib/get-message.js')
 var getValue = require('./lib/get-value.js')
 var handleResend = require('./lib/handle-resend.js')
 var write = require('./lib/write.js')
+var getMappedMessage = require('./lib/get-mapped-message')
 
 module.exports = midiStruct
 
@@ -35,11 +36,11 @@ function midiStruct(duplexPort, mapping){
 
   /// scoped
 
-  function handleData(data){
-    var key = data[0] + '/' + data[1]
-    var target = lookup[key]
-    if (target){
-      target.set(data[2])
+  function handleData (data) {
+    var msg = getMappedMessage(data)
+    var target = lookup[msg.key]
+    if (target) {
+      target.set(msg.value)
     }
   }
 
