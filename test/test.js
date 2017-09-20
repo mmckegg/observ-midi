@@ -39,7 +39,7 @@ test('value', function(t){
 
 })
 
-test.only('value - 2 value midi', function(t){
+test('value - 2 value midi', function(t){
 
   var output = []
   var duplexPort = Through(function(data){
@@ -52,9 +52,9 @@ test.only('value - 2 value midi', function(t){
     changes.push(value)
   })
 
-  duplexPort.queue([123, 100])
-  duplexPort.queue([123, 70])
-  duplexPort.queue([123, 0])
+  duplexPort.queue([123, 100, undefined])
+  duplexPort.queue([123, 70, undefined])
+  duplexPort.queue([123, 0, undefined])
 
   obs.output.set([0, 127]) // value stack: top most outputted
   obs.output.set(50)
@@ -73,6 +73,29 @@ test.only('value - 2 value midi', function(t){
 
   t.end()
 })
+
+test('value - 1 value midi', function(t){
+
+  var output = []
+  var duplexPort = Through(function(data){
+    output.push(data)
+  })
+
+  var obs = ObservMidi(duplexPort, '123')
+  var changes = []
+  obs(function(value){
+    changes.push(value)
+  })
+
+  duplexPort.queue([123, undefined, undefined])
+
+  t.same(changes, [
+    undefined
+  ])
+
+  t.end()
+})
+
 
 test('varhash', function(t){
 
