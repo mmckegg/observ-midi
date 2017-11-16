@@ -16,7 +16,7 @@ function ObservMidi(duplexPort, mapping, output){
     return require('./grid.js')(duplexPort, mapping, output)
 
   } else if (mapping instanceof Object){ // ObservStruct
-    return require('./struct.js')(duplexPort, mapping)
+    return require('./struct.js')(duplexPort, mapping, output)
 
   }
 }
